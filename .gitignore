@@ -1,0 +1,84 @@
+# Node.js специфічні файли
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# Logs
+logs
+*.log
+logs/**/*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+debug.log*
+
+# OS специфічні файли
+.DS_Store
+Thumbs.db
+
+# IDE/Editor специфічні файли
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Тестові файли
+coverage/
+.nyc_output/
+
+# Build файли
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Temporary files
+tmp/
+temp/
+
+# Екземпляри .env файлів
+.env
+.env.local
+.env.*.local
+
+# Production файли
+config.production.json
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Miscellaneous
+*.tgz
+*.pid
+*.seed
+*.log
+
+# Сторонні сервіси
+.sentrycli/
+.vercel/
+.netlify/
+
+# TypeScript
+*.d.ts
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# Jest cache
+jest.cache/
+.jest/
+
+# Папка, яку потрібно додати до .gitignore, якщо ви використовуєте pm2
+pm2-log/
+
