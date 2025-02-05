@@ -12,8 +12,10 @@ const ApiaryService = require('./services/apiaryService');
 const ApiaryController = require('./controllers/apiaryController');
 const BeehiveService = require('./services/beehiveService');
 const BeehiveController = require('./controllers/beehiveController');
+const Health = require('./controllers/healthController');
 
 const authMiddleware = require('./middleware/authMiddleware');
+const job = require('./cron/cron');
 
 const app = express();
 
@@ -24,8 +26,9 @@ const beehiveService = new BeehiveService(model.Apiary, model.Beehive, model.Sen
 const userController = new UserController(userService);
 const apiaryController = new ApiaryController(apiaryService);
 const beehiveController = new BeehiveController(beehiveService);
+const healthCeckController = new Health();
 
-const router = require('./routers/index')(userController, apiaryController, beehiveController, authMiddleware);
+const router = require('./routes/index')(userController, apiaryController, beehiveController, healthCeckController, authMiddleware);
 
 const port = process.env.PORT || 3000;
 
@@ -34,6 +37,7 @@ app.use(express.json());
 app.use('/api', router);
 
 connectMQTT(beehiveController);
+job.start();
 
 const start = async () => {
     try {
