@@ -15,7 +15,6 @@ const BeehiveController = require('./controllers/beehiveController');
 const Health = require('./controllers/healthController');
 
 const authMiddleware = require('./middleware/authMiddleware');
-const job = require('./cron/cron');
 
 const app = express();
 
@@ -37,7 +36,6 @@ app.use(express.json());
 app.use('/api', router);
 
 connectMQTT(beehiveController);
-job.start();
 
 const start = async () => {
     try {
