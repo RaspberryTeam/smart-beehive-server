@@ -1,11 +1,16 @@
 const beehiveService = require("../services/beehiveService");
 
 class BeehiveController {
+
+    constructor(beehiveService) {
+        this.beehiveService = beehiveService;
+    }
+
     async addBeehive(req, res) {
         try {
             const beehiveData = req.body;
             console.log(beehiveData);
-            const created = await beehiveService.create(beehiveData);
+            const created = await this.beehiveService.create(beehiveData);
             return res.status(201).json(created);
         } catch (error) {
             return res.status(400).json(error.message);
@@ -14,7 +19,8 @@ class BeehiveController {
 
     async addSensorsData(data) {
         try {
-            const created = await beehiveService.addSensorsData(data);
+            console.log(data);
+            const created = await this.beehiveService.addSensorsData(data);
         } catch (error) {
             console.log(error.message)
         }
@@ -23,7 +29,7 @@ class BeehiveController {
     async getBeehiveById(req, res) {
         try {
             const { beehiveId } = req.params;
-            const beehive = await beehiveService.getBeehiveById(beehiveId);
+            const beehive = await this.beehiveService.getBeehiveById(beehiveId);
             return res.status(200).json(beehive);
         } catch (error) {
             return res.status(400).json({ message: error.message });
@@ -31,4 +37,4 @@ class BeehiveController {
     }
 }
 
-module.exports = new BeehiveController();
+module.exports = BeehiveController;

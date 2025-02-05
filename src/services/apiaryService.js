@@ -1,10 +1,15 @@
 const { Sequelize } = require("../db/db");
-const { Apiary, Beehive, SensorData } = require("../models/models");
 
 class ApiaryService {
 
+    constructor(ApiaryModel, BeehiveModel, SensorDataModel) {
+        this.Apiary = ApiaryModel;
+        this.Beehive = BeehiveModel;
+        this.SensorData = SensorDataModel;
+    }
+
     async create(userId, apiaryData) {
-        const created = await Apiary.create({
+        const created = await this.Apiary.create({
             userId: userId,
             name: apiaryData.name
         });
@@ -13,14 +18,14 @@ class ApiaryService {
     };
 
     async getApiarys(userId) {
-        const apiarys = await Apiary.findAll(
+        const apiarys = await this.Apiary.findAll(
             {
                 where: {
                     userId: userId,
                 },
                 include: [
                     {
-                        model: Beehive,
+                        model: this.Beehive,
                         as: 'beehives',
                         attributes: [],
                     },
@@ -38,17 +43,17 @@ class ApiaryService {
     };
 
     async getApiaryDetails(apiaryId) {
-        const apiray = await Apiary.findOne({
+        const apiray = await this.Apiary.findOne({
             where: {
                 id: apiaryId
             },
             include: [
                 {
-                    model: Beehive,
+                    model: this.Beehive,
                     as: 'beehives',
                     include: [
                         {
-                            model: SensorData,
+                            model: this.SensorData,
                             as: 'sensors_data',
                             attributes: ['temperature', 'humidity', 'weight', 'rain_percentage']
                         }
@@ -61,14 +66,13 @@ class ApiaryService {
     };
 
     async getApiaryBeehives(apiaryId) {
-        const beehives = await Beehive.findAll({
+        const beehives = await this.Beehive.findAll({
             where: {
                 apiaryId: apiaryId
             }
         })
         return beehives;
     };
-
 }
 
-module.exports = new ApiaryService();
+module.exports = ApiaryService;

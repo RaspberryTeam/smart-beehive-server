@@ -1,12 +1,11 @@
-const Router = require('express');
-const router = new Router();
+const express = require('express');
 
-const beehiveController = require('./beehive');
-const userController = require('./user');
-const apiaryController = require('./apiary');
+module.exports = (userController, apiaryController, beehiveController, authMiddleware) => {
+    const router = express.Router();
 
-router.use('/beehives', beehiveController);
-router.use('/users', userController);
-router.use('/apiarys', apiaryController);
+    router.use('/users', require('./user')(userController));
+    router.use('/apiaries', require('./apiary')(apiaryController, authMiddleware));
+    router.use('/beehives', require('./beehive')(beehiveController, authMiddleware));
 
-module.exports = router;    
+    return router;
+};

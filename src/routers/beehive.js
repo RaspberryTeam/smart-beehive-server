@@ -1,11 +1,10 @@
-const Router = require('express');
-const router = new Router();
+const express = require('express');
 
-const beehiveController = require('../controllers/beehiveController');
-const authMiddleware = require('../middleware/authMiddleware');
+module.exports = (beehiveController, authMiddleware) => {
+    const router = express.Router();
+    router.post('/', authMiddleware, (req, res) => beehiveController.addBeehive(req, res));
 
-router.post('/', authMiddleware, beehiveController.addBeehive);
+    router.get('/:beehiveId', authMiddleware, (req, res) => beehiveController.getBeehiveById(req, res));
 
-router.get('/get-details/:beehiveId', authMiddleware, beehiveController.getBeehiveById);
-
-module.exports = router;
+    return router;
+};

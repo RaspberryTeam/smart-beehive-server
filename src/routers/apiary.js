@@ -1,12 +1,12 @@
-const Router = require('express');
-const router = new Router();
+const express = require('express');
 
-const apiaryController = require('../controllers/apiaryController');
-const authMiddleware = require('../middleware/authMiddleware');
+module.exports = (apiaryController, authMiddleware) => {
+    const router = express.Router();
 
-router.post('/', authMiddleware, apiaryController.create);
+    router.post('/', authMiddleware, (req, res) => apiaryController.create(req, res));
 
-router.get('/', authMiddleware, apiaryController.getApirays);
-router.get('/details/:apiaryId', authMiddleware, apiaryController.getApiaryDetails);
+    router.get('/', authMiddleware, (req, res) => apiaryController.getApiaries(req, res))
+    router.get('/:apiaryId', authMiddleware, (req, res) => apiaryController.getApiaryDetails(req, res));
 
-module.exports = router;
+    return router;
+};
