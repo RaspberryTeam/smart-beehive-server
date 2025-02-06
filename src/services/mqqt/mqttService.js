@@ -3,14 +3,23 @@ const mqtt = require('mqtt');
 let client;
 
 function connectMQTT(beehiveController) {
+
     client = mqtt.connect(process.env.MQTT_BROKER_URL, {
-        username: process.env.MQTT_USERMANE,
+        username: process.env.MQTT_USERNAME,
         password: process.env.MQTT_PASSWORD,
         clientId: process.env.MQTT_CLIENT_ID,
     });
 
     client.on('connect', () => {
         subscribeToTopic(process.env.MQTT_TOPIC);
+    });
+
+    client.on('error', (error) => {
+        console.log('MQTT error', error);
+    });
+
+    client.on('close', () => {
+        console.log('MQTT closed');
     });
 
     client.on('message', (topic, message) => {
@@ -25,7 +34,7 @@ function subscribeToTopic(topic) {
         } else {
             console.log(` Subscribe to topic: ${topic}`);
         }
-    })
+    });
 };
 
 module.exports = {

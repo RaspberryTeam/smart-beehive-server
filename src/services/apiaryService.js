@@ -70,7 +70,7 @@ class ApiaryService {
             where: {
                 apiaryId: apiaryId
             }
-        })
+        });
         return beehives;
     };
 }
