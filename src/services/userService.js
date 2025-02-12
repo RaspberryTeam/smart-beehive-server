@@ -15,6 +15,8 @@ class UserService {
             }
         });
 
+       
+
         if (candidate) {
             throw new Error('User already exists');
         };

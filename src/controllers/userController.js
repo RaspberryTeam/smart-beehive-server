@@ -8,10 +8,9 @@ class UserController {
         try {
             const userData = req.body;
             const token = await this.userService.create(userData);
-            console.log(res);
             return res.status(201).json(token);
         } catch (error) {
-            return res.status(400);
+            return res.status(400).json({ message: error.message });
         }
     };
 
