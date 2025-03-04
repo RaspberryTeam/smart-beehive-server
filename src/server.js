@@ -18,6 +18,8 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 
+const errorHandler = require('./middleware/errorMiddleware');  
+
 const userService = new UserService(model.User);
 const apiaryService = new ApiaryService(model.Apiary, model.Beehive, model.SensorData);
 const beehiveService = new BeehiveService(model.Apiary, model.Beehive, model.SensorData);
@@ -34,6 +36,7 @@ const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json());
 app.use('/api', router);
+app.use(errorHandler);
 
 connectMQTT(beehiveController);
 
@@ -46,7 +49,7 @@ const start = async () => {
         });
     } catch (error) {
         console.log(error);
-    }
+    };
 };
 
 start();

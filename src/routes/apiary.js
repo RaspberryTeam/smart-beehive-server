@@ -2,11 +2,12 @@ const express = require('express');
 
 module.exports = (apiaryController, authMiddleware) => {
     const router = express.Router();
+    router.use(authMiddleware);
 
-    router.post('/', authMiddleware, (req, res) => apiaryController.create(req, res));
+    router.post('/', (req, res, next) => apiaryController.create(req, res, next));
 
-    router.get('/', authMiddleware, (req, res) => apiaryController.getApiaries(req, res))
-    router.get('/:apiaryId', authMiddleware, (req, res) => apiaryController.getApiaryDetails(req, res));
+    router.get('/', (req, res, next) => apiaryController.getApiaries(req, res, next))
+    router.get('/:apiaryId', (req, res, next) => apiaryController.getApiaryDetails(req, res, next));
 
     return router;
 };

@@ -1,5 +1,7 @@
-const bcrypt = require('bcrypt');
 const { generateJwt } = require("../utils/jwt");
+const { NotFoundError, ValidationError } = require('../errors/ApiError');
+const bcrypt = require('bcrypt');
+const MESSAGES = require("../constants/messages");
 
 class UserService {
     constructor(UserModel) {
@@ -15,10 +17,8 @@ class UserService {
             }
         });
 
-       
-
         if (candidate) {
-            throw new Error('User already exists');
+            throw new ValidationError(MESSAGES.VALIDATION.USER_EXISTS);
         };
 
         const user = await this.User.create({
@@ -39,19 +39,19 @@ class UserService {
         });
 
         if (user == null) {
-            throw new Error("User not found");
+            throw new NotFoundError(MESSAGES.VALIDATION.USER_NOT_FOUND);
         };
 
         let comparedPassword = bcrypt.compareSync(userData.password, user.password);
 
         if (!comparedPassword) {
-            throw new Error("Worng password");
-        }
+            throw new ValidationError(MESSAGES.VALIDATION.WRONG_PASSWORD);
+        };
 
         const token = generateJwt(user.id, user.phonenumber);
 
         return token;
-    }
-}
+    };
+};
 
 module.exports = UserService;
